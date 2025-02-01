@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CSV Concatenation Check</title>
+  <style>
+    /* CSS Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f4f4f9;
+      color: #333;
+      line-height: 1.6;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      padding: 20px;
+    }
+    
+    header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    
+    header h1 {
+      font-size: 2rem;
+      color: #4a90e2;
+    }
+    
+    .result {
+      padding: 10px;
+      margin: 10px 0;
+      border-bottom: 1px solid #ddd;
+    }
+    
+    .result:last-child {
+      border-bottom: none;
+    }
+    
+    .success {
+      color: green;
+    }
+    
+    .failure {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>CSV Concatenation Check</h1>
+      <p>Concatenating a string with the sum of two numbers and checking if the result exceeds 10 characters</p>
+    </header>
+    
+    <div id="output">
+      <!-- Results will be displayed here -->
+      <p>Loading CSV data...</p>
+    </div>
+  </div>
+
+  <script>
+    // Helper function: basic CSV parsing
+    function parseCSV(data) {
+      // Split by newlines to get each row
+      const rows = data.trim().split('\n');
+      // Split the header row to get the column names (assumed to be in order: Number1, Number2, String, Boolean)
+      const header = rows[0].split(',');
+      // Parse each data row into an object
+      const parsedData = [];
+      for (let i = 1; i < rows.length; i++) {
+        if (!rows[i].trim()) continue; // Skip empty lines
+        // For simplicity, split on comma
+        const cols = rows[i].split(',');
+        // Create an object mapping header keys to cell values (trim spaces)
+        const rowObject = {
+          Number1: cols[0].trim(),
+          Number2: cols[1].trim(),
+          String: cols[2].trim(),
+          Boolean: cols[3] ? cols[3].trim() : ""
+        };
+        parsedData.push(rowObject);
+      }
+      return parsedData;
+    }
+
+    // Function to process CSV data
+    function processData(data) {
+      const records = parseCSV(data);
+      let outputHTML = '';
+      
+      records.forEach(record => {
+        const num1 = parseFloat(record.Number1);
+        const num2 = parseFloat(record.Number2);
+        const str = record.String;
+        const sum = num1 + num2;
+        const resultStr = str + sum;
+        const exceeds = resultStr.length > 10;
+        
+        outputHTML += `<div class="result">
+          <strong>Result:</strong> '${resultStr}' is <span class="${exceeds ? 'success' : 'failure'}">${exceeds ? 'exceeding' : 'not exceeding'}</span> 10 characters.
+        </div>`;
+      });
+      
+      document.getElementById('output').innerHTML = outputHTML;
+    }
+
+    // Load CSV file using fetch API
+    fetch('machine_problems_dataset.csv')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not OK');
+        }
+        return response.text();
+      })
+      .then(data => {
+        processData(data);
+      })
+      .catch(error => {
+        document.getElementById('output').innerHTML = `<p style="color:red;">Error loading CSV data: ${error.message}</p>`;
+      });
+  </script>
+</body>
+</html>
