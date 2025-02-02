@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CSV Concatenation Check</title>
+  <title>CSV Concatenation Check - Fan Page Style</title>
   <style>
     /* CSS Reset */
     * {
@@ -13,36 +13,42 @@
     }
     
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #f4f4f9;
-      color: #333;
-      line-height: 1.6;
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(135deg, #141E30, #243B55); /* Dark blue gradient */
+      color: #ffffff;
       padding: 20px;
     }
     
     .container {
-      max-width: 800px;
+      max-width: 900px;
       margin: 0 auto;
-      background: #fff;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      padding: 20px;
+      background: rgba(0, 0, 0, 0.7);
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+      padding: 30px;
     }
     
     header {
       text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 30px;
     }
     
     header h1 {
-      font-size: 2rem;
-      color: #4a90e2;
+      font-size: 2.5rem;
+      color: #FF4081; /* Vibrant pink */
+      text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+    }
+    
+    header p {
+      font-size: 1.2rem;
+      margin-top: 10px;
+      color: #B0BEC5;
     }
     
     .result {
-      padding: 10px;
-      margin: 10px 0;
-      border-bottom: 1px solid #ddd;
+      padding: 15px;
+      margin: 15px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     }
     
     .result:last-child {
@@ -50,11 +56,17 @@
     }
     
     .success {
-      color: green;
+      color: #4CAF50; /* Green */
     }
     
     .failure {
-      color: red;
+      color: #F44336; /* Red */
+    }
+    
+    /* Adding a subtle hover effect for results */
+    .result:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transition: background 0.3s;
     }
   </style>
 </head>
@@ -62,11 +74,10 @@
   <div class="container">
     <header>
       <h1>CSV Concatenation Check</h1>
-      <p>Concatenating a string with the sum of two numbers and checking if the result exceeds 10 characters</p>
+      <p>Concatenating a string with the sum of two numbers and checking if it exceeds 10 characters</p>
     </header>
     
     <div id="output">
-      <!-- Results will be displayed here -->
       <p>Loading CSV data...</p>
     </div>
   </div>
@@ -76,7 +87,7 @@
     function parseCSV(data) {
       // Split by newlines to get each row
       const rows = data.trim().split('\n');
-      // Split the header row to get the column names (assumed to be in order: Number1, Number2, String, Boolean)
+      // Split the header row to get the column names (assumed order: Number1, Number2, String, Boolean)
       const header = rows[0].split(',');
       // Parse each data row into an object
       const parsedData = [];
@@ -84,7 +95,6 @@
         if (!rows[i].trim()) continue; // Skip empty lines
         // For simplicity, split on comma
         const cols = rows[i].split(',');
-        // Create an object mapping header keys to cell values (trim spaces)
         const rowObject = {
           Number1: cols[0].trim(),
           Number2: cols[1].trim(),
@@ -129,7 +139,7 @@
         processData(data);
       })
       .catch(error => {
-        document.getElementById('output').innerHTML = `<p style="color:red;">Error loading CSV data: ${error.message}</p>`;
+        document.getElementById('output').innerHTML = `<p style="color:#F44336;">Error loading CSV data: ${error.message}</p>`;
       });
   </script>
 </body>
