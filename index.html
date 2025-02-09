@@ -45,6 +45,15 @@
       color: #B0BEC5;
     }
     
+    #controls {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    
+    #controls input[type="file"] {
+      margin-bottom: 10px;
+    }
+    
     .result {
       padding: 15px;
       margin: 15px 0;
@@ -77,8 +86,16 @@
       <p>Concatenating a string with the sum of two numbers and checking if it exceeds 10 characters</p>
     </header>
     
+    <!-- CSV file input and execute button -->
+    <div id="controls">
+      <input type="file" id="csvFileInput" accept=".csv">
+      <br>
+      <button id="executeBtn">Execute Program</button>
+    </div>
+    
+    <!-- Output area -->
     <div id="output">
-      <p>Loading CSV data...</p>
+      <p>Please select a CSV file and click "Execute Program".</p>
     </div>
   </div>
 
@@ -127,20 +144,28 @@
       document.getElementById('output').innerHTML = outputHTML;
     }
 
-    // Load CSV file using fetch API
-    fetch('machine_problems_dataset.csv')
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Network response was not OK');
-        }
-        return response.text();
-      })
-      .then(data => {
-        processData(data);
-      })
-      .catch(error => {
-        document.getElementById('output').innerHTML = `<p style="color:#F44336;">Error loading CSV data: ${error.message}</p>`;
-      });
+    // Add event listener to the execute button
+    document.getElementById('executeBtn').addEventListener('click', function() {
+      const fileInput = document.getElementById('csvFileInput');
+      if (fileInput.files.length === 0) {
+        alert('Please select a CSV file.');
+        return;
+      }
+      
+      const file = fileInput.files[0];
+      const reader = new FileReader();
+      
+      reader.onload = function(e) {
+        const text = e.target.result;
+        processData(text);
+      };
+      
+      reader.onerror = function(e) {
+        alert('Error reading file: ' + e.target.error);
+      };
+      
+      reader.readAsText(file);
+    });
   </script>
 </body>
 </html>
