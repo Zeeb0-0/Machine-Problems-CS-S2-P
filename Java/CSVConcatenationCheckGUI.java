@@ -9,7 +9,7 @@ public class CSVConcatenationCheckGUI extends JFrame {
     public CSVConcatenationCheckGUI() {
         super("CSV Concatenation Check");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(600, 400);
+        setSize(1280, 720);
         setLocationRelativeTo(null);
 
         // Create UI components
